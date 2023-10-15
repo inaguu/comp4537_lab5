@@ -28,14 +28,14 @@ http.createServer((req, res) => {
             res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*'})
             res.end(result)
         })
-    } 
-
-    if (req.method === "POST") {
+    } else if (req.method === "POST") {
         console.log(req.body)
-    }
-
-    if (req.method === "GET") {
+    } else if (req.method === "GET") {
         
+    } else {
+        res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*'})
+        res.write("<p>home page</p>")
+        res.end()
     }
 
 
