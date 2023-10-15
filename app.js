@@ -40,7 +40,7 @@ http.createServer((req, res) => {
     }
 
     if (req.method === "POST") {
-
+        console.log(req.body)
     }
 
     if (req.method === "GET") {
