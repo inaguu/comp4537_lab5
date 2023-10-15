@@ -17,6 +17,22 @@ http.createServer((req, res) => {
     let q = url.parse(req.url, true) 
     let pathname = q.pathname
 
+    if (req.method === "POST") {
+        res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*'})
+        console.log(req.body)
+        res.write("<p>in post</p>")
+        res.end()
+        return
+    }
+
+    if (req.method === "GET") {
+        res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*'})
+        console.log(req.body)
+        res.write("<p>in get</p>")
+        res.end()
+        return
+    }
+
     if (pathname.includes("/lab5/api/v1/sql/") ) {
 
         let sql = pathname.substring(pathname.lastIndexOf('/') + 1)
@@ -38,17 +54,6 @@ http.createServer((req, res) => {
         res.write("<p>home page</p>")
         res.end()
     }
-
-    if (req.method === "POST") {
-        res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*'})
-        console.log(req.body)
-        res.end()
-    }
-
-    if (req.method === "GET") {
-
-    }
-
 
 }).listen(port)
 
