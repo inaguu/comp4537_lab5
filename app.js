@@ -43,10 +43,19 @@ http.createServer((req, res) => {
     }
 
     if (req.method === "GET") {
-        res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*'})
-        console.log(req.body)
-        res.write("<p>in get</p>")
-        res.end()
+
+        let body = ""
+        
+        req.on("data", (chunk) => {
+            if (chunk != null) {
+                body += chunk
+            }
+        })
+
+        req.on("end", () => {
+            res.end("We got your GET request")
+        })
+
         return
     }
 
