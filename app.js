@@ -43,6 +43,8 @@ http.createServer((req, res) => {
             }
         })
 
+        console.log(body)
+
         req.on("end", () => {
             res.end("We got your POST request")
         })
