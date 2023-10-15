@@ -18,15 +18,23 @@ http.createServer((req, res) => {
     let pathname = q.pathname
 
     res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': '*'})
-    console.log(req.headers)
 
-    if (req.method === "POST") {
-        // res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*'})
-        // console.log(req.body)
-        // res.write("<p>in post</p>")
-        // res.end()
-        // return
+    if (pathname.includes("/lab5/api/v1/sql/") ) {
 
+        let sql = pathname.substring(pathname.lastIndexOf('/') + 1)
+        let clean_sql = sql.replace(/%20/g, " ")
+
+        con.query(clean_sql, (err, result) => {
+            if (err) throw err
+            console.log(result)
+
+            for (let i = 0; i < result.length; i++) {
+                res.write(`<p>${result[i].user_id}, ${result[i].username}, ${result[i].email}</p><br>`)
+            }
+            
+            res.end()
+        })
+    } else if (req.method === "POST") {
         let body = ""
         
         req.on("data", (chunk) => {
@@ -39,11 +47,7 @@ http.createServer((req, res) => {
             res.end("We got your POST request")
         })
 
-        return
-    }
-
-    if (req.method === "GET") {
-
+    }  else if (req.method === "GET") {
         let body = ""
         
         req.on("data", (chunk) => {
@@ -56,27 +60,7 @@ http.createServer((req, res) => {
             res.end("We got your GET request")
         })
 
-        return
-    }
-
-    if (pathname.includes("/lab5/api/v1/sql/") ) {
-
-        let sql = pathname.substring(pathname.lastIndexOf('/') + 1)
-        let clean_sql = sql.replace(/%20/g, " ")
-
-        con.query(clean_sql, (err, result) => {
-            if (err) throw err
-            console.log(result)
-            res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*'})
-
-            for (let i = 0; i < result.length; i++) {
-                res.write(`<p>${result[i].user_id}, ${result[i].username}, ${result[i].email}</p><br>`)
-            }
-            
-            res.end()
-        })
-    }  else {
-        res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*'})
+    } else {
         res.write("<p>home page</p>")
         res.end()
     }
