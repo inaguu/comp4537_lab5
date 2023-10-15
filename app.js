@@ -48,18 +48,8 @@ http.createServer((req, res) => {
         })
 
     }  else if (req.method === "GET") {
-        let body = ""
-        
-        req.on("data", (chunk) => {
-            if (chunk != null) {
-                body += chunk
-            }
-        })
-
-        req.on("end", () => {
-            res.end("We got your GET request")
-        })
-
+        res.end("We got your GET request")
+    
     } else {
         res.write("<p>home page</p>")
         res.end()
