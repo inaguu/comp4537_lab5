@@ -17,11 +17,28 @@ http.createServer((req, res) => {
     let q = url.parse(req.url, true) 
     let pathname = q.pathname
 
+    res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': '*'})
+    console.log(req.headers)
+
     if (req.method === "POST") {
-        res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*'})
-        console.log(req.body)
-        res.write("<p>in post</p>")
-        res.end()
+        // res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*'})
+        // console.log(req.body)
+        // res.write("<p>in post</p>")
+        // res.end()
+        // return
+
+        let body = ""
+        
+        req.on("data", (chunk) => {
+            if (chunk != null) {
+                body += chunk
+            }
+        })
+
+        req.on("end", () => {
+            res.end("We got your POST request")
+        })
+
         return
     }
 
