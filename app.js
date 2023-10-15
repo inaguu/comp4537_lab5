@@ -40,7 +40,9 @@ http.createServer((req, res) => {
     }
 
     if (req.method === "POST") {
+        res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*'})
         console.log(req.body)
+        res.end()
     }
 
     if (req.method === "GET") {
