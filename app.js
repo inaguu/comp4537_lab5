@@ -26,16 +26,25 @@ http.createServer((req, res) => {
             if (err) throw err
             console.log(result)
             res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*'})
-            res.end(result)
+
+            for (let i = 0; i < result.length; i++) {
+                res.write(`<p>${result[i].user_id}, ${result[i].username}, ${result[i].email}</p><br>`)
+            }
+            
+            res.end()
         })
-    } else if (req.method === "POST") {
-        console.log(req.body)
-    } else if (req.method === "GET") {
-        
-    } else {
+    }  else {
         res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*'})
         res.write("<p>home page</p>")
         res.end()
+    }
+
+    if (req.method === "POST") {
+
+    }
+
+    if (req.method === "GET") {
+
     }
 
 
