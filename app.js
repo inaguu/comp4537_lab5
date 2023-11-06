@@ -12,6 +12,16 @@ const con = mysql.createPool ({
     database: "freedb_comp3920NodeJS"
 })
 
+const query = (sql) => {
+    return new Promise((resolve, reject) => {
+        con.query(sql, (err, rows) => {
+            if(err) {
+                return reject(err);
+            }           
+            return resolve(rows)
+        })
+    }) 
+}
 
 http.createServer((req, res) => {
     let q = url.parse(req.url, true) 
@@ -57,11 +67,15 @@ http.createServer((req, res) => {
             }
         })
 
-        req.on("end", () => {
+        req.on("end", async () => {
             let data = JSON.parse(body)
+
+            let table = await query(data.table)
+
             con.query(data.query, (err, result) => {
                 if (err) {
                     res.writeHead(400, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*'})
+                    console.log(err)
                     res.end("You got an SQL error, please check your SQL query")
                 }
                 console.log(result)
@@ -71,12 +85,12 @@ http.createServer((req, res) => {
         })
 
     }  else if (req.method === "GET" && pathname.includes("/lab5/select")) {
-        let sql = pathname.substring(pathname.lastIndexOf('/') + 1)
-        let clean_sql = sql.replace(/%20/g, " ")
+        let sql = q.query["query"]
 
-        con.query(clean_sql, (err, result) => {
+        con.query(sql, (err, result) => {
             if (err) {
                 res.writeHead(400, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*'})
+                console.log(err)
                 res.end("You got an SQL error, please check your SQL query")
             }
             console.log(result)
